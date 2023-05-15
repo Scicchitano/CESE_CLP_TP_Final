@@ -37,27 +37,26 @@ architecture PWM_arq of PWM is
 	end component;
 
 
-begin	
+	
+	
+begin
 	sumador: SumNb generic map (N) port map(pwm_cnt,UNO,'0',res_f,co_o); 
 	
-	process (clk_i, rst_i,res_f,duty_i)
-	begin
-		if rising_edge(clk_i) then
-			if rst_i = '1' then
-			pwm_cnt <= CERO;--(others => '0');
-			pwm_o <= '0';
+	if rising_edge(clk_i) then
+		if rst_i = '1' then
+		  pwm_cnt <= CERO;--(others => '0');
+		  pwm_o <= '0';
+		else
+			if res_f < duty_i then
+				pwm_o <= '1';
+				--pwm_cnt <= pwm_cnt + 1;
 			else
-				if res_f < duty_i then
-					pwm_o <= '1';
-					--pwm_cnt <= pwm_cnt + 1;
-				else
-					pwm_cnt <= CERO;--(others => '0');
-					pwm_o <= '0';
-					
-				end if;
+				pwm_cnt <= CERO;--(others => '0');
+				pwm_o <= '0';
+				
 			end if;
 		end if;
-		
-		ci_i <= co_o;
-	end process;
+	end if;
+	
+	ci_i <= co_o;
 end;

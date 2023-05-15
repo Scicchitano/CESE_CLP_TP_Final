@@ -24,11 +24,10 @@ architecture PWM_tb_arq of PWM_tb is
 
 
 		signal clk_tb: std_logic:='0';
-		signal duty_tb: std_logic:='0';
+		signal duty_tb: std_logic_vector(6 downto 0):="101000";
 		signal ena_tb: std_logic:='1';
 		signal rst_tb: std_logic:='1';
-		signal D_tb: std_logic_vector(6 downto 0):="101000";
-		signal pwm_tb: std_logic_vector (6 downto 0);
+		signal pwm_tb: std_logic:='1';
 		
 		
 begin
@@ -50,8 +49,6 @@ begin
 			rst_i => rst_tb,
 			ena_i => ena_tb,
 			pwm_o => pwm_tb
-			
-			
 		);
 
 end;
