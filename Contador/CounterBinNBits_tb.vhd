@@ -10,15 +10,17 @@ architecture Contador_tb_arq of Contador_tb is
 	component Contador is
         generic(
             N : natural := 7;
-            MaxCount: std_logic_vector :="0100100"
+            DutyCycle: std_logic_vector :="0100101";
+            MaxCycle: std_logic_vector :="1100100"
         );
         port(        --Aca defino las entradas y salidas
             clk_i: in std_logic;
             rst_i: in std_logic;
             ena_i: in std_logic;
-            Dv: in std_logic_vector (6 downto 0);
             Qv_o: buffer std_logic_vector (6 downto 0);
-            Flag: buffer std_logic
+            FlagDuty: buffer std_logic;
+            FlagMax: buffer std_logic;
+            pwm_o: buffer std_logic
         );
 	end component;
 
@@ -26,9 +28,10 @@ architecture Contador_tb_arq of Contador_tb is
 		signal clk_tb: std_logic:='0';
 		signal rst_tb: std_logic:='1';
 		signal ena_tb: std_logic:='0';
-		signal Dv_tb: std_logic_vector(6 downto 0):="0010100";
 		signal Qv_o_tb: std_logic_vector(6 downto 0):="0000000";
-		signal Flag_tb: std_logic:='0';
+		signal FlagDuty_tb: std_logic:='0';
+		signal FlagMax_tb: std_logic:='0';
+		signal pwm_o_tb: std_logic:='0';
 		
 		
 begin
@@ -49,9 +52,10 @@ begin
 			clk_i	=> clk_tb,
 			rst_i => rst_tb,
 			ena_i => ena_tb,
-			Dv => Dv_tb,
 			Qv_o => Qv_o_tb,
-			Flag => Flag_tb
+			FlagDuty => FlagDuty_tb,
+			FlagMax => FlagMax_tb,
+			pwm_o => pwm_o_tb
 		);
 
 end;
