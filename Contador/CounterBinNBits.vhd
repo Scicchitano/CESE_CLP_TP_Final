@@ -20,7 +20,7 @@ end;
 
 architecture Contador_arq of Contador is
 
-	signal ci_i,Yg,co_o: std_logic := '0';
+	signal ci_i,Yg,co_o,RST: std_logic := '0';
 	signal pwm_aux : boolean := true;
 	signal sum_in,suma,res: std_logic_vector(6 downto 0) := "0000000";
 	constant UNO : std_logic_vector(N-1 downto 0) := (N-2 downto 0 => '0') & '1';
@@ -84,8 +84,7 @@ architecture Contador_arq of Contador is
         );
     end component;
 	
-	
-	
+
 	
 
 
@@ -94,7 +93,7 @@ architecture Contador_arq of Contador is
 
 
 begin
-    Reg: Registro generic map (N) port map(clk_i,rst_i,ena_i,sum_in,suma);
+    Reg: Registro generic map (N) port map(clk_i,RST,ena_i,sum_in,suma);
 	
 	sumador: SumNb generic map (N) port map(suma,UNO,ci_i,res,co_o); 
 	
@@ -118,10 +117,12 @@ begin
 	--Dv <= suma;
 	sum_in <= res;
     Qv_o <= res;
+    
 	--ci_i <= co_o;
 	--c3 <= Qv_o(0) and not(Qv_o(1)) and not(Qv_o(2)) and not(Qv_o(3)) and not(Qv_o(4)) and not(Qv_o(5)) and Qv_o(6) and not(Qv_o(7)) and not(Qv_o(8)) and not(Qv_o(9)) and Qv_o(10) and Qv_o(11) and not(Qv_o(12)) and Qv_o(13) and not(Qv_o(14)) and Qv_o(15);
 	FlagDuty <= c3;
 	FlagMax <= c2;
+	RST <= rst_i or c2;
 	
 	process (clk_i, co_o,rst_i,FlagDuty,FlagMax,pwm_aux)
         begin
@@ -131,30 +132,27 @@ begin
                 ci_i <= '0';
             end if;
             
-            
-            --if rising_edge(clk_i) then
-            if c3 = '1' then
-                pwm_aux <= false;
-            end if;
-               
-            if c2 = '1' then
-                --sum_in <= CERO;
-                pwm_aux <= true;
-            end if;
-            --    if rst_i = '1' then
-            --        res <= CERO;--(others => '0');
-            --       pwm_o <= '0';
-            --        sum_in <= CERO;
-            --        pwm_aux <= true;
-            --    else
-            if pwm_aux then
-                pwm_o <= '1';
-            else
+            if rst_i = '1' then
                 pwm_o <= '0';
-                
-            end if;
+            else
+            --if rising_edge(clk_i) then
+                if c3 = '1' then
+                    pwm_aux <= false;
+                end if;
+                   
+                if c2 = '1' then
+                    --sum_in <= CERO;
+                    pwm_aux <= true;
+                end if;
+                    
+                if pwm_aux then
+                    pwm_o <= '1';
+                else
+                    pwm_o <= '0';
+                    
+                end if;
             --    end if;
-            --end if;
+            end if;
     end process;
     
 	 
