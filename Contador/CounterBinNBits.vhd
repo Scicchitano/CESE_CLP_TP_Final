@@ -4,8 +4,8 @@ use IEEE.std_logic_1164.all;
 entity Contador is
 	generic(
 		N : natural := 7;
-		DutyCycle: std_logic_vector :="0100101";
-        MaxCycle: std_logic_vector :="0100100"
+		DutyCycle: std_logic_vector :="0001111";--"0100101";
+        MaxCycle: std_logic_vector :="0110010"--"1100100"
 	);
 	port(		--Aca defino las entradas y salidas
 		clk_i: in std_logic;
