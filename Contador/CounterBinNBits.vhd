@@ -3,14 +3,14 @@ use IEEE.std_logic_1164.all;
 
 entity Contador is
 	generic(
-		N : natural := 7;
-		DutyCycle: std_logic_vector :="0001111";--"0100101";
-        MaxCycle: std_logic_vector :="0110010"--"1100100"
+		N : natural := 7
 	);
 	port(		--Aca defino las entradas y salidas
 		clk_i: in std_logic;
 		rst_i: in std_logic;
 		ena_i: in std_logic;
+		DutyCycle: in std_logic_vector (6 downto 0);-- :="0001111";--"0100101";
+        MaxCycle: in std_logic_vector (6 downto 0); --:="0110010";--"1100100"
 		Qv_o: buffer std_logic_vector (6 downto 0);
 		FlagDuty: buffer std_logic;
 		FlagMax: buffer std_logic;
